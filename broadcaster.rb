@@ -23,6 +23,7 @@ class Broadcaster
     msg = command.serialize
     puts msg
     @remote_clients.each do |rc|
+      rc.write [msg.length].pack("S")
       rc.write msg
     end
   end
