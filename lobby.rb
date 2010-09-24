@@ -6,7 +6,12 @@ class Lobby
 
   # allow clients to connect and register themselves to setup the p2p
   def open_doors
-    @port = 7373
+    @port = 7374
+
+    # only the accept thread is allowed to access @lobby_clients 
+    # (or after accept thread is dead)
+    @lobby_clients = []
+
     @clients = Queue.new
     server = TCPServer.open 7373
     @accept_thread = Thread.new do
@@ -14,12 +19,19 @@ class Lobby
         while true
           client = server.accept
           puts "YAY! #{client} connected!"
-          @port += 1
-          client << [@port].pack("S") 
+
+          ports = [@port]
+
+          @lobby_clients.each do
+            @port += 1
+            client << [@port].pack("S") 
+          end
+
           client_server = TCPServer.open @port 
           client_socket = client_server.accept
+
           @clients << client_socket
-          client.close
+          @lobby_clients << client
         end
       ensure
         server.close
@@ -30,6 +42,10 @@ class Lobby
 
   def close_doors
     @accept_thread.kill
+    @lobby_clients.each do |lobby_client|
+      lobby_client.pop.close
+    end
+
     remote_clients = []
     while @clients.length > 0
       remote_clients << @clients.pop

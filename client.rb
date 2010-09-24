@@ -14,7 +14,10 @@ class Client
 
     puts "Starting the game."
     clients = lobby.close_doors
+    setup_with_siblings clients
+  end
 
+  def setup_with_siblings(clients)
     @channel = Queue.new
     broadcaster = Broadcaster.new
     broadcaster.command_channel = @channel
@@ -30,9 +33,21 @@ class Client
 
   def join(ip)
     host = TCPSocket.new ip, 7373
+
+    # connect to lobby client
     port = host.recvfrom(2)[0].unpack("S")[0]
-    host.close
     host = TCPSocket.new ip, port
-    puts host.gets
+
+    # allow other clients to connect to you
+    while true
+      port = host.recvfrom(2)[0].unpack("S")[0]
+
+      Thread.new do
+        host = TCPSocket.new ip, port
+        puts host.gets
+      end
+    end
+
+    #host.close
   end
 end
