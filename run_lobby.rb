@@ -1,7 +1,9 @@
 require 'client'
 
 c = Client.new
-c.host_lobby
+puts "waiting..."
+gets
+c.start_all
 
 puts "DONE.. please continue"
 gets
