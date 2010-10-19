@@ -4,6 +4,7 @@ require 'command'
 require 'broadcaster'
 require 'catcher'
 require 'lobby'
+require 'safe_array'
 
 module ManagementCommands
   PEER_CONNECT = 1
@@ -17,7 +18,7 @@ class Client
   def initialize(management_port = MANAGEMENT_PORT)
     @management_port = management_port 
     @port = INITIAL_PEER_PORT
-    @peers = Queue.new
+    @peers = SafeArray.new
     Thread.new do
       setup_management_port
     end
