@@ -1,4 +1,7 @@
 require 'client'
 
-client = Client.new(7379)
-client.join "localhost"
+client = Client.new
+client.join ARGV.pop
+
+puts "client is waiting..."
+gets

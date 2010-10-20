@@ -12,6 +12,7 @@ class SafeArray
     }
     self
   end
+  alias :<< :push
 
   def delete(item)
     @mutex.synchronize {
@@ -32,4 +33,9 @@ class SafeArray
     }
   end
 
+  def size
+    @mutex.synchronize {
+      @items.size
+    }
+  end
 end
