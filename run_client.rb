@@ -1,6 +1,6 @@
-require 'client'
+require 'netz'
 
-client = Client.new
+client = Netz::Client.new
 client.join ARGV.pop
 
 puts "client is waiting..."
