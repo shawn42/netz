@@ -27,6 +27,7 @@ Gem::Specification.new do |s|
      "lib/netz/command.rb",
      "lib/netz/command_serializer.rb",
      "lib/netz/safe_array.rb",
+     "netz.gemspec",
      "script/run_client.rb",
      "script/run_lobby.rb"
   ]
