@@ -1,0 +1,8 @@
+= Netz
+http://github.com/shawn42/netz/tree/master
+
+== INSTALL
+  gem install netz
+
+== TODO
+  more docs and examples
